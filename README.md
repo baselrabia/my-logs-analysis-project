@@ -19,7 +19,7 @@ Reporting tool should answer the following questions:
 2. Who are the most popular article authors of all time?
 3. On which days did more than 1% of requests lead to errors?
 
-#### Output File [output for logs project .txt](https://www.vagrantup.com/) is attached in this repository you can check it.
+#### Output File [output for logs project .txt](https://github.com/baselrabia/my-logs-analysis-project/blob/master/output%20for%20logs%20project%20.txt) is attached in this repository you can check it.
 
 * Project follows good SQL coding practices: Each question should be answered with a single database query.  
 * The code presents its output in clearly formatted plain text.
@@ -33,7 +33,7 @@ This project makes use of Udacity's Linux-based virtual machine (VM) configurati
 1. Download [Vagrant](https://www.vagrantup.com/) and install.
 2. Download [Virtual Box](https://www.virtualbox.org/) and install. 
 3. Clone this repository to a directory of your choice.
-4. Download the **newsdata.sql** (extract from **newsdata.zip**) and **logs_project.py** files from the respository and move them to your **vagrant** directory within your VM.
+4. Download the **newsdata.sql** (extract from **newsdata.zip**) and [logs_project.py](https://github.com/baselrabia/my-logs-analysis-project/blob/master/logs_project.py) files from the respository and move them to your **vagrant** directory within your VM.
 
 #### Run these commands from the terminal in the folder where your vagrant is installed in: 
 1. ```vagrant up``` to start up the VM.
