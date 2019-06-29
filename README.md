@@ -1,9 +1,9 @@
 # my-logs-analysis-project
 Logs Analysis Project - Udacity Full Stack Web Developer nanodegree 2019
 
-Building an informative summary from logs by sql database queries.
-Interacting with a live database "newsdata.sql" from the command line and from the python code. 
-This project is a part of the Udacity's Full Stack Web Developer Nanodegree.
+-Building an informative summary from logs by sql database queries.
+-Interacting with a live database "newsdata.sql" from the command line and from the python code. 
+-This project is a part of the Udacity's Full Stack Web Developer Nanodegree.
 
 ## Technologies used
 1. PostgreSQL
