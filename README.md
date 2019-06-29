@@ -17,10 +17,11 @@ Reporting tool should answer the following questions:
 2. Who are the most popular article authors of all time?
 3. On which days did more than 1% of requests lead to errors?
 
+#### Output File  ```output for logs project .txt ``` is attached in this repository you can check it.
+
 * Project follows good SQL coding practices: Each question should be answered with a single database query.  
 * The code presents its output in clearly formatted plain text.
 
-- Output File "output for logs project .txt" is attached in this repository you can check it.
 
 ## Project Requirements
 System setup and how to view this project:
