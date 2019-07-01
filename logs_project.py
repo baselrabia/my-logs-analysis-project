@@ -1,63 +1,66 @@
-# Import psycopg2 module 
+#!/usr/bin/env python
+# Import psycopg2 module
 import psycopg2
 
 
-# Get 3 popular articles ..Return list of 3 most popular articles,with the top article at first.
-
-def popular_articles():
-    
+# helper function, help to start to connect database and fetch data from sql.
+def run_query(sql):
     # Connect database
     conn = psycopg2.connect("dbname=news")
-
     # Start cursor to run queries and get results
     curs = conn.cursor()
-
-    sql = """select title ,num from 
-    (select substr(path,10),count(*) as num from log where path != '/' group by path) as clicks,articles 
-    where clicks.substr = slug order by num desc limit 3;"""
-
     # Execute SQL query by cursor
-    curs.execute(sql) 
+    curs.execute(sql)
+    # Fetch all results from the cursor and print them
+    data = curs.fetchall()
+    return data, conn
+
+
+""" Get 3 popular articles
+Return list of 3 most popular articles,with the top article at first."""
+
+
+def popular_articles():
 
     print('1- Get 3 popular articles')
 
-    # Fetch all results from the cursor and print them 
-    articles=curs.fetchall()
+    sql = """select title ,num from
+    (select substr(path,10),count(*) as num from log
+    where path != '/' group by path) as clicks,articles
+    where clicks.substr = slug order by num desc limit 3;"""
 
-    for table in articles:
-        print('" ' + table[0] +' "' +' ----- '+ str(table[1]) + ' views' )
+    run = run_query(sql)
+    data = run[0]
+    conn = run[1]
+
+    for table in data:
+        print('" ' + table[0] + ' "' + ' ----- ' + str(table[1]) + ' views')
 
     # Close connection
     conn.close()
     pass
 
 
-
 # Get popular authors ..Return list of popular article authors,
 
+
 def popular_authors():
-    
-    # Connect database
-    conn = psycopg2.connect("dbname=news")
-
-    # Start cursor to run queries and get results
-    curs = conn.cursor()
-
-    sql = """select name , views from (select author , sum(num) as views from (select substr(path,10),count(*) as num from log
-     where path != '/' group by path) as clicks,articles 
-     where clicks.substr = slug group by author order by views desc ) as viewtotal,authors 
-     where author = authors.id;"""
-
-    # Execute SQL query by cursor
-    curs.execute(sql) 
 
     print('2- Get popular authors')
 
-    # Fetch all results from the cursor and print them 
-    authors=curs.fetchall()
+    sql = """select name , views from (select author , sum(num)
+    as views from (select substr(path,10),count(*) as num from log
+    where path != '/' group by path) as clicks,articles
+    where clicks.substr = slug group by author order by views desc )
+    as viewtotal,authors
+    where author = authors.id;"""
 
-    for table in authors:
-        print('" ' + table[0] +' "' +' ----- '+ str(table[1]) + ' views' )
+    run = run_query(sql)
+    data = run[0]
+    conn = run[1]
+
+    for table in data:
+        print('" ' + table[0] + ' "' + ' ----- ' + str(table[1]) + ' views')
 
     # Close connection
     conn.close()
@@ -68,32 +71,26 @@ def popular_authors():
 
 def http_errors():
 
-    # Connect database
-    conn = psycopg2.connect("dbname=news")
+    print('3- Get Day on which more than 1 percentage of HTTP errors')
 
-    # Start cursor to run queries and get results
-    curs = conn.cursor()
-
-    sql = """select to_char(date,'MON DD,YYYY'),percentage_of_error from 
-    (select t_all_requests.date, all_requests, error_requests , ((error_requests::float/ all_requests)*100) as percentage_of_error  from
+    sql = """select to_char(date,'MON DD,YYYY'),percentage_of_error from
+    (select t_all_requests.date, all_requests, error_requests ,
+    ((error_requests::float/ all_requests)*100) as percentage_of_error  from
     (select date_trunc('day', time) as date, count(*) as all_requests from log
     group by date ) as t_all_requests ,
-    (select date_trunc('day', time) as date, count(*) as error_requests from log
+    (select date_trunc('day', time) as date, count(*)
+    as error_requests from log
     where status = '404 NOT FOUND' group by date) as t_error_requests
-    where t_all_requests.date = t_error_requests.date 
+    where t_all_requests.date = t_error_requests.date
     order by t_all_requests.date desc) as t_perc
     where percentage_of_error > 1 ;"""
 
-    # Execute SQL query by cursor
-    curs.execute(sql) 
+    run = run_query(sql)
+    data = run[0]
+    conn = run[1]
 
-    print('3- Get Day on which more than 1 percentage of HTTP errors')
-
-    # Fetch all results from the cursor and print them 
-    errors=curs.fetchall()
-
-    for table in errors:
-        print( table[0]  +' ----- '+ str(table[1])[0:4] + '% errors' )
+    for table in data:
+        print(table[0] + ' ----- ' + str(table[1])[0:4] + '% errors')
 
     # Close connection
     conn.close()
